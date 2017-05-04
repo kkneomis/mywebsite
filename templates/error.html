@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <style>
+    .intro-bg {
+      background-image: url("../static/img/404.jpg");
+    }
+    .intro-bg:after{
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: none;
+}
+
+    .intro-inner .intro-content h2 {
+      color: #000;
+    }
+    .intro-inner .intro-content h3 {
+      color: #000;
+    }
+
+    </style>
+ 	<!-- ==== Intro Section Start ==== -->
+	<section class="intro-section" id="home">
+		<div class="intro-bg"></div>
+		<div class="intro-inner">
+			<div class="intro-content">
+				<div class="container">
+					<h2>404</h2>
+					<h3>Oops! I don't have that page. Try going back <a href="/">home.</a></h3>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ==== Intro Section End ==== -->
+
+{% endblock %}

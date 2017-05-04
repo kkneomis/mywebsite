@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <style>
+    *,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+.row {
+	/* column width */
+	-moz-column-width: 19em;
+	-webkit-column-width: 19em;
+
+	/* space between columns */
+	-moz-column-gap: 1em;
+	-webkit-column-gap: 1em;
+}
+
+.item {
+	display: inline-block;
+	width: 100%;
+}
+
+    .blog-container{
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+    </style>
+<!-- ==== Blog Section Start ==== -->
+	<section class="blog-section spad" id="blog">
+		<div class="blog-container">
+			<div class="section-title">
+				<h2>Bl<span>og</span></h2>
+			</div>
+			<div class="row">
+                {% for post in posts %}
+
+
+				<!-- item -->
+				<div class="item">
+					<div class="single-blog-item wow fadeInUp" data-wow-delay="0.2s">
+						<div class="blog-item-thumb">
+							<img src="{{url_for('static', filename='img/blog/' + post.image)}}" alt="">
+							<a href="{{url_for('post', name=post.path.replace('posts/', '')) }}" class="readm-btn">
+								<i class="fa fa-plus"></i>
+							</a>
+						</div>
+						<div class="blog-item-content">
+							<h2>{{ post.title }}</h2>
+							<h4>Simeon Kakpovi - {{ post.date }}</h4>
+						</div>
+					</div>
+				</div>
+				<!-- item -->
+                {% endfor %}
+			</div>
+		</div>
+	</section>
+
+{% endblock %}

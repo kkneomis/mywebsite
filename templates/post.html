@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    	<!-- ==== Blog Section Start ==== -->
+	<section class="blog-section spad-lg" id="blog">
+		<div class="container blog">
+			<h2>{{ post.title }}</h2>
+            <p>{{ post.date }}</p>
+
+            {{ post.html|safe }}
+
+
+            <nav aria-label="...">
+              <ul class="pager">
+                  {% if links.previous %} 
+                <li class="previous"><a href="../../{{ links.previous.path }}"><span aria-hidden="true">&larr;</span> Previous </a></li>
+                  {% endif %}
+                  {% if links.next %} 
+                <li class="next"><a href="../../{{ links.next.path }}">Next  <span aria-hidden="true">&rarr;</span></a></li>
+                  {% endif %}
+              </ul>
+            </nav>
+
+
+		</div>
+	</section><!-- ==== Blog Section End ==== -->
+
+{% endblock %}
