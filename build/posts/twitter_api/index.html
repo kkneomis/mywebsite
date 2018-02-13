@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Simeon Kakpovi - Programmer and Cyber-Guy</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Simeon Kakpovi's website and blog">
+	<meta name="keywords" content="Simeon, Kakpovi, Bison, Howard, Benin, Cybersecurity">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../../static/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+	<link rel="stylesheet" href="../../static/css/owl.carousel.css"/>
+	<link rel="stylesheet" href="../../static/css/animate.min.css"/>
+	<link rel="stylesheet" href="../../static/css/style.css"/>
+
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+	<!-- ==== Preloader Start ==== -->
+	<div id="preloader">
+		<div class="pre-container">
+			<div class="spinner">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
+	<!-- ==== Preloader End ==== -->
+
+	<!-- ==== Left Bar Start ==== -->
+	<div class="left-bar">
+		<div class="logo">
+			<h2><a href="/">K</a></h2>
+		</div>
+		<div class="social">
+			<div>
+				<a href="https://www.linkedin.com/in/kakpovi/" target="_blank"><i class="fa fa-linkedin"></i></a>
+				<a href="https://github.com/kkneomis/" target="_blank"><i class="fa fa-github"></i></a>
+				<a href="https://twitter.com/realSimDawg" target="_blank"><i class="fa fa-twitter"></i></a>
+			</div>
+		</div>
+		<div class="nav-switch">
+			<span class="bar-one"></span>
+			<span class="bar-two"></span>
+			<span class="bar-three"></span>
+		</div>
+	</div>
+	<!-- ==== Left Bar End ==== -->
+
+
+	<!-- ==== Nav Menu Start ==== -->
+	<nav class="mainmenu">
+		<ul class="menu-list">
+			<li><a href="/#home">Home</a></li>
+			<li><a href="/#about">About</a></li>
+			<li><a href="/#resume">Resume</a></li>
+			<li><a href="/#portfolio">My Work</a></li>
+			<li><a href="/posts">Blog</a></li>
+			<li><a href="/#contact">Contact</a></li>
+		</ul>
+	</nav>
+	<!-- ==== Nav Menu End ==== -->
+
+
+     
+      
+    
+     
+
+    	<!-- ==== Blog Section Start ==== -->
+	<section class="blog-section spad-lg" id="blog">
+		<div class="container blog">
+			<h2>Using the Twitter API to retweet content</h2>
+            <p>2017-05-06</p>
+
+            <p>The first hackathon I attended was a Startup Weekend hackathon in Washigton D.C. It occurred as a series with various hackathons occuring at the same time in various cities. There was a hashtag was going on between all the various cities. Surprisingly, DC was actually in second place even though we only had about 100 people competiting, 20 of whom were actually tweeting. The reason was that someone at the hackathon https://twitter.com/kevinohashi?lang=en has a bot running that would retweet all tweets with the hashtag of our city. We would had won too, except there was another meddling city that has a bot running longer than we did.</p>
+<p>In this guide, I will show you how to create a twitter bot that will retweet all of a user's tweets, and a bot that will retweet all tweets with a certain hastag.</p>
+<h3>What you will need</h3>
+<ol>
+<li>A twitter developer account</li>
+<li>A python editor</li>
+<li>Your thinking hat</li>
+</ol>
+<h3>Getting Started</h3>
+<p>The first thing you want to do is create an application. Go to https://dev.twitter.com/ and log in. You probably have to confirm a phone number for your twitter account before creating an app.</p>
+<p>Click My apps &gt; Create New App &gt; Fill in all the required fields to create your Twitter app.</p>
+<p>Once your application has been created, you want to navigate to the "Keys and Acess Tokens" tabs and generate your acess tokens. You will need all the keys from this page in order to use twitter's api.</p>
+<h3>Introducing Tweepy</h3>
+<p>Tweepy is a python library that can use used to access twitter's api. http://tweepy.readthedocs.io/
+If you do not already have it installed, run the following command in your terminal.</p>
+<div class="codehilite"><pre><span></span>pip install tweepy
+</pre></div>
+
+
+<p>Create a file called tweet.py using a code editor (like pycharm) and insert the following. Now replace al the keys with your own keys that you just got.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">tweepy</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="n">argfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1">#enter the corresponding information from your Twitter application:</span>
+<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer key</span>
+<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer secret key</span>
+<span class="n">ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token</span>
+<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token secret</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+<span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">ACCESS_KEY</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">)</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<h3>Retweeting content from one user</h3>
+<p>The first thing we need to do is actually get our user. We can do this using the user's Twitter handle. Add the following line to your file within the code editor:</p>
+<div class="codehilite"><pre><span></span>user = api.get_user(&#39;realSimDawg&#39;)
+print user.screen_name
+</pre></div>
+
+
+<p>If you run the file, it should now print the user's name. Now we actually want the get the user's tweets and retweet them. In the following lines, we will get all the users tweets, loop through them, and retween each of them.</p>
+<div class="codehilite"><pre><span></span>tweets = api.user_timeline(screen_name = user.screen_name,count=200)
+for tweet in tweets:
+  try:
+    api.retweet(tweet.id)
+  except:
+    # if we get an error
+    print &quot;I probably retweeted this already&quot;
+</pre></div>
+
+
+<p>Your file should now look like this</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">tweepy</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="n">argfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1">#enter the corresponding information from your Twitter application:</span>
+<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer key</span>
+<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer secret key</span>
+<span class="n">ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token</span>
+<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token secret</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+<span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">ACCESS_KEY</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">)</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="s1">&#39;realSimDawg&#39;</span><span class="p">)</span>
+
+<span class="n">tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">user_timeline</span><span class="p">(</span><span class="n">screen_name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">retweet</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="c1"># if we get an error</span>
+    <span class="k">print</span> <span class="s2">&quot;I probably retweeted this already&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<h3>Retweeting content from a hashtag</h3>
+<p>This is for the most part the same. First we will set some variables.</p>
+<div class="codehilite"><pre><span></span>searchQuery = &#39;#GradSZN&#39;  # this is what we&#39;re searching for
+tweetsPerQry = 100  # this is the max the API permits
+</pre></div>
+
+
+<p>Now we will use a one-liner to actually get the tweets and then retweet them.</p>
+<div class="codehilite"><pre><span></span>new_tweets = api.search(q=searchQuery, count=tweetsPerQry,
+                                        since_id=None)
+
+for tweet in new_tweets:
+  print tweet.text
+  try:
+    api.retweet(tweet.id)
+  except:
+    print &quot;I already retweeted this&quot;
+</pre></div>
+
+
+<p>Your final file should look something like this.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">tweepy</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="n">argfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1">#enter the corresponding information from your Twitter application:</span>
+<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer key</span>
+<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your consumer secret key</span>
+<span class="n">ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token</span>
+<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="s1">&#39;1234abcd...&#39;</span><span class="c1">#keep the quotes, replace this with your access token secret</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+<span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">ACCESS_KEY</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">)</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="s1">&#39;realSimDawg&#39;</span><span class="p">)</span>
+
+<span class="n">tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">user_timeline</span><span class="p">(</span><span class="n">screen_name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">retweet</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="c1"># if we get an error</span>
+    <span class="k">print</span> <span class="s2">&quot;I probably retweeted this already&quot;</span>
+
+<span class="n">searchQuery</span> <span class="o">=</span> <span class="s1">&#39;#GradSZN&#39;</span>  <span class="c1"># this is what we&#39;re searching for</span>
+<span class="n">tweetsPerQry</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># this is the max the API permits</span>
+
+<span class="n">new_tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">searchQuery</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">tweetsPerQry</span><span class="p">,</span>
+                                        <span class="n">since_id</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">new_tweets</span><span class="p">:</span>
+  <span class="k">print</span> <span class="n">tweet</span><span class="o">.</span><span class="n">text</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">retweet</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&quot;I already retweeted this&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<p>You can learn more <a href="http://tweepy.readthedocs.io/en/v3.5.0/streaming_how_to.html">by reading the Tweepy docs</a>, <a href="https://dototot.com/how-to-write-a-twitter-bot-with-python-and-tweepy/">or using the guide I followed</a>, <a href="https://www.karambelkar.info/2015/01/how-to-use-twitters-search-rest-api-most-effectively./">or the other guide I followed.</a></p>
+
+
+            <nav aria-label="...">
+              <ul class="pager">
+                  
+
+                <li class="previous"><a href="../../posts/cross_site_scripting"><span aria-hidden="true">&larr;</span> Previous </a></li>
+                  
+                  
+              </ul>
+            </nav>
+
+
+		</div>
+	</section><!-- ==== Blog Section End ==== -->
+
+
+
+	<!-- ==== Footer Section Start ==== -->
+	<footer class="footer-section spad">
+		<p> &copy; 2017 Simeon Kakpovi All right reserved </p>
+	</footer>
+	<!-- ==== Footer Section End ==== -->
+
+
+	<!-- ==== Jquery & Scripts==== -->
+    <script src="../../static/js/jquery-2.1.4.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../../static/js/isotope.pkgd.min.js"></script>
+    <script src="../../static/js/owl.carousel.min.js"></script>
+    <script src="../../static/js/jquery.nav.min.js"></script>
+    <script src="../../static/js/wow.min.js"></script>
+    <script src="../../static/js/particles.min.js"></script>
+    <script src="../../static/js/init-particles.js"></script>
+    <script src="../../static/js/magnific-popup.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0YyDTa0qqOjIerob2VTIwo_XVMhrruxo"></script>
+    <script src="../../static/js/scripts.js"></script>
+</body>
+</html>
